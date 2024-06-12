@@ -14,7 +14,7 @@ public class ArrowControl : MonoBehaviour
     void Update()
     {
         if(UD) arrowUDLR(KeyCode.W, KeyCode.S);
-        else arrowUDLR(KeyCode.A,KeyCode.D);
+        else arrowUDLR(KeyCode.D,KeyCode.A);
     }
 
     void arrowUDLR(KeyCode button1, KeyCode button2)

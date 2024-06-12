@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class ArrowHead : MonoBehaviour
@@ -8,28 +5,54 @@ public class ArrowHead : MonoBehaviour
 
     [SerializeField] SpriteRenderer conection;
 
-    float positionY;
+    float position;
+    [SerializeField] bool arrowUp;
     SpriteRenderer render;
     void Start() 
     {
-        positionY = transform.position.y;
+        if(arrowUp) position = transform.position.y;
+        else position = transform.position.x;
+
         render = GetComponent<SpriteRenderer>();
     }
     void Update()
     {
-        print(conection.bounds.extents.y);
-        if(conection.GetComponent<Transform>().localScale.y > 0)
+        ArrowPos(arrowUp);
+    }
+
+    void ArrowPos(bool up)
+    {
+        if(up)
         {
-            transform.position = new Vector2(transform.position.x, positionY + conection.bounds.extents.y*2);
-            render.enabled = true;
-            transform.eulerAngles = Vector3.zero;
+            if(conection.GetComponent<Transform>().localScale.y > 0)
+            {
+                transform.position = new Vector2(transform.position.x, position + conection.bounds.extents.y*2);
+                render.enabled = true;
+                transform.eulerAngles = Vector3.zero;
+            }
+            else if(conection.GetComponent<Transform>().localScale.y < 0)
+            {
+                transform.position = new Vector2(transform.position.x, position - conection.bounds.extents.y*2);
+                transform.eulerAngles = new Vector3(0,0,180);
+                render.enabled = true;
+            }
+            else render.enabled = false;  
         }
-        else if(conection.GetComponent<Transform>().localScale.y < 0)
+        else
         {
-            transform.position = new Vector2(transform.position.x, positionY -conection.bounds.extents.y*2);
-            transform.eulerAngles = new Vector3(0,0,180);
-            render.enabled = true;
+            if(conection.GetComponent<Transform>().localScale.y > 0)
+            {
+                transform.position = new Vector2(position + conection.bounds.extents.x*2, transform.position.y);
+                render.enabled = true;
+                transform.eulerAngles = new Vector3(0,0,270);
+            }
+            else if(conection.GetComponent<Transform>().localScale.y < 0)
+            {
+                transform.position = new Vector2(position -conection.bounds.extents.x*2,transform.position.y);
+                transform.eulerAngles = new Vector3(0,0,90);
+                render.enabled = true;
+            }
+            else render.enabled = false;  
         }
-        else render.enabled = false;    
     }
 }
