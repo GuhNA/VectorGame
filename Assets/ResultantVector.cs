@@ -2,16 +2,25 @@ using UnityEngine;
 
 public class ResultantVector : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer boundsY;
+    [SerializeField] SpriteRenderer boundsY, boundsX;
     float moveY;
     float moveX;
-    [SerializeField] SpriteRenderer boundsX;
     [SerializeField] Transform resultantArrow;
     public Vector2 pos;
     // Update is called once per frame
     float posX, posY;
-    float ca, co, tg, xPai, yPai, deg;
+    float tg, xPai, yPai, deg, _ca, _co;
 
+    public float ca
+    {
+        get { return _ca; }
+        set { _ca = value; }
+    }
+    public float co
+    {
+        get { return _co; }
+        set { _co = value; }
+    }
     private void Start() 
     {
         posX = transform.position.x;
@@ -45,8 +54,14 @@ public class ResultantVector : MonoBehaviour
         }
         if(moveX < 0 && moveY < 0) deg = -180 + deg;
         
-        resultantArrow.eulerAngles = new Vector3(0,0,-(90-deg));
-        print(-(90-deg));
+        if(!boundsX.enabled) pos.x = posX;
+        if(!boundsY.enabled) pos.y = posY;
+        if(!(pos.x == posX && pos.y == posY))
+        {
+            resultantArrow.eulerAngles = new Vector3(0,0,-(90-deg));
+            resultantArrow.GetComponent<SpriteRenderer>().enabled = true;
+        } 
+        else resultantArrow.GetComponent<SpriteRenderer>().enabled = false;
         resultantArrow.transform.position = new Vector2(pos.x, pos.y);
         GetComponent<LineRenderer>().SetPosition(0,transform.position);
         GetComponent<LineRenderer>().SetPosition(1,pos);
@@ -54,10 +69,14 @@ public class ResultantVector : MonoBehaviour
 
     void calcTg()
     {
-        ca = xPai + pos.x;
-        co = yPai + pos.y; 
+        if(!boundsX.enabled) ca = 0;
+        else ca = xPai + pos.x;
+        if(!boundsY.enabled) co = 0;
+        else co = yPai + pos.y;
+
         tg = co/ca;
         deg = Mathf.Rad2Deg * Mathf.Atan(tg);
+        print("seta horizontal: "+ca+ " Seta vertical: "+co);
     }
 
 

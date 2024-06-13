@@ -3,8 +3,10 @@ using UnityEngine;
 public class ArrowControl : MonoBehaviour
 {
 
-    [SerializeField] float arrowSize;
+    public float arrowSize;
     [SerializeField] bool UD;
+
+
     void Start()
     {
         arrowSize = .4f;
@@ -24,7 +26,9 @@ public class ArrowControl : MonoBehaviour
         else if(Input.GetKey(button2)) timer -= Time.deltaTime;
         else timer = 0;
         arrowSize = Mathf.Clamp(arrowSize + timer,-.4f,.4f);
-        transform.localScale = new Vector3(transform.localScale.x,arrowSize,transform.localScale.z);
+        if(arrowSize > -.07f && arrowSize < .07f)
+            transform.localScale = new Vector3(transform.localScale.x,0,transform.localScale.z);
+        else transform.localScale = new Vector3(transform.localScale.x,arrowSize,transform.localScale.z);
     }
 
 }
