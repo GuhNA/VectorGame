@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class ResultantVector : MonoBehaviour
@@ -76,7 +77,6 @@ public class ResultantVector : MonoBehaviour
 
         tg = co/ca;
         deg = Mathf.Rad2Deg * Mathf.Atan(tg);
-        print("seta horizontal: "+ca+ " Seta vertical: "+co);
     }
 
 
